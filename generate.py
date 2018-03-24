@@ -47,10 +47,10 @@ def generate(outstream, seed, length):
 parser = argparse.ArgumentParser(
     description="Generate a new text on the base of corpus")
 parser.add_argument("--model", help="Path to the file with generated model")
-parser.add_argument("--seed", help="The desired first word;"\
-                                   " will be chosen randomly by default")
+parser.add_argument("--seed", help="The desired first word; "
+                                   "will be chosen randomly by default")
 parser.add_argument("--length", help="The desired length of text")
-parser.add_argument("--output", help="File in which to save generated text"\
+parser.add_argument("--output", help="File in which to save generated text; "
                                      "will be printed to stdout by default")
 args = parser.parse_args()
 
