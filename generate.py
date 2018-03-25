@@ -3,8 +3,10 @@ import sys
 import random
 
 
-def get_args():
-    """Create a parser, read arguments, return them"""
+def create_parser():
+    """Create a parser, return it
+    :return: quite unexpectedly, a parser that can parse arguments
+    """
     parser = argparse.ArgumentParser(
         description="Generate a new text on the base of corpus")
     parser.add_argument("--model",
@@ -15,7 +17,7 @@ def get_args():
     parser.add_argument("--output",
                         help="File in which to save generated text; "
                              "will be printed to stdout by default")
-    return parser.parse_args()
+    return parser
 
 
 def load_model(instream, model):
@@ -23,7 +25,6 @@ def load_model(instream, model):
     :param instream: pointer to the file with the model
     :param model: where to load the model,
                   dictionary(string : dictionary(string : int))
-    :return: None; the model is saved to "model"
     """
     for line in instream.readlines():
         elems = line.split()
@@ -39,7 +40,6 @@ def generate(outstream, seed, length, model):
     :param seed: the desired first word
     :param length: length of output
     :param model: same as in documentation for load_model()
-    :return: None; the text is saved to the file pointed to by outstream
     """
     while length > 0:
         outstream.write(seed + ' ')
@@ -58,7 +58,7 @@ def generate(outstream, seed, length, model):
 
 
 def run():
-    args = get_args()
+    args = create_parser().parse_args()
 
     # freq[word1] = {word2 : number of pairs {word1, word2} in the corpus}
     model = dict()

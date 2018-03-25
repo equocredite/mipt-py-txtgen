@@ -4,7 +4,7 @@ import os
 
 
 def process_file(instream, lc, model):
-    """Read a file, save to freq.
+    """Read a file, add to model.
     :param instream: pointer to an input file
     :param lc: True to make all letters lowercase
     :param model: where to save the model,
@@ -45,10 +45,13 @@ def save_model(outstream, model):
         outstream.write('\n')
 
 
-def get_args():
-    """Create a parser, read arguments, return them"""
+def create_parser():
+    """Create a parser, return it
+    :return: a parser that can parse command line arguments (wow)
+    """
     parser = argparse.ArgumentParser(
-        description="Count frequencies of all texts in a corpus and save them")
+        description="Count frequencies of all texts in"
+                    " a corpus and save them")
     parser.add_argument("--input-dir",
                         help="Path to the folder with some texts to train on")
     parser.add_argument("--model",
@@ -56,11 +59,11 @@ def get_args():
                              "in which the model shall be saved")
     parser.add_argument("--lc", action="store_true",
                         help="Make all letters lowercase")
-    return parser.parse_args()
+    return parser
 
 
 def run():
-    args = get_args()
+    args = create_parser().parse_args()
 
     # model[word1] = {word2 : number of pairs {word1, word2} in the corpus}
     model = dict()
