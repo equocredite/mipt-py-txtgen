@@ -56,6 +56,7 @@ class ModelLoadTester(unittest.TestCase):
         file.close()
         self.assertEqual(model["aba"]["caba"], 3)
         self.assertEqual(model["daba"]["caba"], 2)
+        os.system("rm test.txt")
 
 
 if __name__ == "__main__":
