@@ -8,35 +8,31 @@ class ParserTester(unittest.TestCase):
         self.parser = train.create_parser()
 
     def __assert_none(self, keys = set()):
+        self.assertIsNotNone(self.args.model)
         self.assertIsNotNone(self.args.lc)
         if "lc" not in keys:
             self.assertFalse(self.args.lc)
-
         if "input_dir" in keys:
             self.assertIsNotNone(self.args.input_dir)
         else:
             self.assertIsNone(self.args.input_dir)
 
-        if "model" in keys:
-            self.assertIsNotNone(self.args.model)
-        else:
-            self.assertIsNone(self.args.model)
-
     def test_lc(self):
-        self.args = self.parser.parse_args(["--lc"])
+        self.args = self.parser.parse_args(["--lc", "--model", "xyz"])
         self.__assert_none({"lc"})
         self.assertTrue(self.args.lc)
-        self.args = self.parser.parse_args([])
+        self.args = self.parser.parse_args(["--model", "bionic_beaver"])
         self.__assert_none()
 
     def test_input_dir(self):
-        self.args = self.parser.parse_args(["--input-dir", "abacaba"])
+        self.args = self.parser.parse_args(["--input-dir", "abacaba",
+                                            "--model", "model.txt"])
         self.__assert_none({"input_dir"})
         self.assertEqual(self.args.input_dir, "abacaba")
 
     def test_model(self):
         self.args = self.parser.parse_args(["--model", "dabacaba"])
-        self.__assert_none({"model"})
+        self.__assert_none({})
         self.assertEqual(self.args.model, "dabacaba")
 
     def test_all(self):
