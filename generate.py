@@ -26,7 +26,7 @@ def load_model(instream, model):
     :param model: where to load the model,
                   dictionary(string : dictionary(string : int))
     """
-    for line in instream.readlines():
+    for line in instream:
         elems = line.split()
         if elems[0] not in model:
             model[elems[0]] = dict()

@@ -12,7 +12,7 @@ def process_file(instream, lc, model):
     """
     # so that we could consider a pair separated by a newline character
     previous_line_end = ""
-    for line in instream.readlines():
+    for line in instream:
         # the same line, but with each
         # non-alphabetical symbol replaced with a space"""
         clean_line = previous_line_end + ' '
