@@ -50,7 +50,7 @@ def create_parser():
     :return: a parser that can parse command line arguments (wow)
     """
     parser = argparse.ArgumentParser(
-        description="Count frequencies of all texts in"
+        description="Count frequencies of all pairs in"
                     " a corpus and save them")
     parser.add_argument("--input-dir",
                         help="Path to the folder with some texts to train on")
