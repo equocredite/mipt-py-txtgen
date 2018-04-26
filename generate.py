@@ -40,10 +40,10 @@ def generate(outstream, seed, length, model):
     :param length: length of output
     :param model: same as in documentation for load_model()
     """
-    if seed not in model:
-        seed = random.choice(list(model.keys()))
     while length > 0:
         outstream.write(seed + ' ')
+        if seed not in model:
+            seed = random.choice(list(model.keys()))
         freq_sum = 0
         for word in model[seed]:
             freq_sum += model[seed][word]
