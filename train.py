@@ -1,6 +1,7 @@
 import argparse
 import sys
 import os
+import re
 
 
 def process_file(instream, lc, model):
@@ -11,26 +12,18 @@ def process_file(instream, lc, model):
                   dictionary(string : dictionary(string : int))
     """
     # so that we could consider a pair separated by a newline character
+    regex = re.compile("[^a-zA-Zа-яА-Я ]")
     previous_line_end = ""
     for line in instream:
-        # the same line, but with each
-        # non-alphabetical symbol replaced with a space"""
-        clean_line = previous_line_end + ' '
-        for c in line:
-            if c.isalpha():
-                if lc:
-                    c = c.lower()
-                clean_line += c
-            else:
-                clean_line += ' '
-        words = clean_line.split()
+        if lc:
+            line = line.lower()
+        # parse the words, throw out all non-alphabetic symbols
+        words = (previous_line_end + regex.sub('', line)).split()
         for i in range(len(words) - 1):
-            if words[i] not in model:
-                model[words[i]] = dict()
-            if words[i + 1] not in model[words[i]]:
-                model[words[i]][words[i + 1]] = 0
+            model.setdefault(words[i], dict())
+            model[words[i]].setdefault(words[i + 1], 0)
             model[words[i]][words[i + 1]] += 1
-        previous_line_end = words[len(words) - 1]
+        previous_line_end = words[-1]
 
 
 def save_model(outstream, model):

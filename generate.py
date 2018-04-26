@@ -28,8 +28,7 @@ def load_model(instream, model):
     """
     for line in instream:
         elems = line.split()
-        if elems[0] not in model:
-            model[elems[0]] = dict()
+        model.setdefault(elems[0], dict())
         for i in range(1, len(elems), 2):
             model[elems[0]][elems[i]] = int(elems[i + 1])
 
@@ -41,18 +40,23 @@ def generate(outstream, seed, length, model):
     :param length: length of output
     :param model: same as in documentation for load_model()
     """
+    if seed not in model:
+        seed = random.choice(list(model.keys()))
     while length > 0:
         outstream.write(seed + ' ')
-        if seed not in model:
-            seed = random.choice(list(model.keys()))
-        freq_list = []
+        freq_sum = 0
         for word in model[seed]:
-            for iter in range(model[seed][word]):
-                freq_list.append(word)
-        if len(freq_list) > 0:
-            seed = random.choice(freq_list)
-        else:
+            freq_sum += model[seed][word]
+        if freq_sum == 0:
             seed = random.choice(list(model.keys()))
+        else:
+            key = random.randint(1, freq_sum)
+            cur = 0
+            for word in model[seed]:
+                cur += model[seed][word]
+                if cur >= key:
+                    seed = word
+                    break
         length -= 1
     outstream.write('\n')
 
